@@ -1,5 +1,5 @@
 %[text] # Create .NET Generic Objects
-%[text] This script uses NET.createGeneric to create .NET objects of a generic type.
+%[text] This script uses `NET.createGeneric` to create .NET objects of a generic type.
 %[text] Copyright The MathWorks 2025
 %[text] ## Create a List of System.Double
 % Call the default constructor for List

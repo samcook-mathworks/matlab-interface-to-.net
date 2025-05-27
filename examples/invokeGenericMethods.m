@@ -1,7 +1,6 @@
 %[text] # Invoke Generic .NET Methods
-%[text] This example shows how to use NET.invokeGenericMethod on .NET objects and types.
+%[text] This example shows how to use `NET.invokeGenericMethod` on .NET objects and types.
 %[text] Copyright The MathWorks 2025
-
 %[text] ## Invoke a static generic method
 % Display all the generic methods of System.Linq.Enumerable
 showGenericMethods("System.Linq.Enumerable");
@@ -12,14 +11,14 @@ for i=1:10
 end
 % Find and display the maximum of those numbers
 max = NET.invokeGenericMethod(...
-    "System.Linq.Enumerable.Range",...
+    "System.Linq.Enumerable",...
     "Max",...
     {"System.Int32"},...
     arr)
 
 %[text] ## Invoke generic instance methods
 % Add our custom assembly to MATLAB
-file = fullfile(pwd, "..", "MyAssembly", "bin", "netstandard2.0", "MyAssembly.dll");
+file = fullfile(pwd, "..", "MyAssembly", "bin", "MyAssembly.dll");
 NET.addAssembly(file);
 % Create an instance of our custom class and display its methods
 obj = MyAssembly.GenericMethods(42);
@@ -36,3 +35,9 @@ oldValue = NET.invokeGenericMethod(...
     {"System.Single"},...
     single(3.14))
 newValue = obj.Value
+
+%[appendix]{"version":"1.0"}
+%---
+%[metadata:view]
+%   data: {"layout":"onright"}
+%---

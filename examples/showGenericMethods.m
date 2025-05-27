@@ -1,4 +1,4 @@
-function output = showGenericMethods(input)
+function showGenericMethods(input)
 % Display all generic methods of a .NET type using reflection.
 % Input can be a .NET object or a string scalar.
 % Copyright The MathWorks 2025
@@ -6,7 +6,7 @@ function output = showGenericMethods(input)
 % Locate the type based on the input
 if isa(input, "System.Object")
     % Input is an instance of a .NET object
-    methods = input.GetType().GetMethods();
+    type = input.GetType();
 elseif ischar(input) || isStringScalar(input)
     % Input is the name of a .NET class
     type = getType(input);
@@ -15,12 +15,13 @@ elseif ischar(input) || isStringScalar(input)
         disp(strcat(input, " not found"));
         return;
     end
-    methods = type.GetMethods();
 end
 % Display all the generic methods
+fprintf("Generic methods of %s\n", string(type.ToString()));
+methods = type.GetMethods();
 for i=1:methods.Length
     if methods(i).IsGenericMethod
-        disp(methods(i).ToString());
+        fprintf("\t%s\n", string(methods(i).ToString()));
     end
 end
 end
