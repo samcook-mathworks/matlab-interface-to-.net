@@ -23,5 +23,5 @@ jobs:
         dotnet-version: 8.0.x
         
     - name: Build .NET Standard 2.0 Assembly
-      run: dotnet build --project MyAssembly/MyAssembly.csproj
+      run: dotnet build MyAssembly/MyAssembly.csproj
     
