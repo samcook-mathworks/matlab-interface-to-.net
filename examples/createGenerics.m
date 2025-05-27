@@ -1,14 +1,13 @@
 %[text] # Create .NET Generic Objects
 %[text] This script uses NET.createGeneric to create .NET objects of a generic type.
 %[text] Copyright The MathWorks 2025
-
 %[text] ## Create a List of System.Double
 % Call the default constructor for List
 list = NET.createGeneric(...
     "System.Collections.Generic.List",...
     {"System.Double"})
 % Add some items to the list
-for i=0:10
+for i=1:10
     list.Add(i);
 end
 list
@@ -21,7 +20,7 @@ dict = NET.createGeneric(...
     "System.Collections.Generic.Dictionary",...
     {"System.String", "System.Int32"})
 % Add entries to the dictionary
-for i=0:10
+for i=1:10
     dict.Add(num2str(i), i);
 end
 dict
@@ -47,3 +46,9 @@ kvpItem = NET.createGeneric(...
     "myString", 42)
 kvpList.Add(kvpItem);
 kvpList
+
+%[appendix]{"version":"1.0"}
+%---
+%[metadata:view]
+%   data: {"layout":"onright","rightPanelPercent":31.8}
+%---
