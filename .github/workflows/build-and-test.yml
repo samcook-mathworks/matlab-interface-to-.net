@@ -1,0 +1,41 @@
+# This workflow will setup .NET and MATLAB on the host machine
+name: Build and Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # Windows examples will use .NET Framework
+  buidl-and-test-on-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup MATLAB
+      uses: matlab-actions/setup-matlab@v2
+      with:
+        cache: true
+
+  # Unix examples will use .NET Core
+  build-and-test-on-unix:
+    strategy:
+      matrix:
+        os: [ 'ubuntu-latest', 'macos-latest' ]
+        dotnet-version: [ '8.0.x' ]
+        
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET ${{ matrix.dotnet-version }}
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+    - name: Setup MATLAB
+      uses: matlab-actions/setup-matlab@v2
+      with:
+        cache: true
+      
