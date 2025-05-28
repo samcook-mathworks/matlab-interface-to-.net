@@ -5,24 +5,25 @@ namespace MyAssembly
 {
     public class GenericMethods
     {
-        public double Value { get; set; }
-        public GenericMethods(double value)
+        public T DisplayAndReturn<T>(T value)
         {
-            Value = value;
-        }
-        
-        // Converts the object to the specified type
-        public T ConvertTo<T>()
-        {
-            return (T)Convert.ChangeType(Value, typeof(T));
+            Console.WriteLine(value);
+            return value;
         }
 
-        // Sets the value of the object and returns its old value
-        public double Swap<T>(T newValue)
+        public static T StaticDisplayAndReturn<T>(T value)
         {
-            double tmp = Value;
-            Value = Convert.ToDouble(newValue);
-            return tmp;
+            Console.WriteLine(value);
+            return value;
+        }
+    }
+
+    public class GenericClass<TOut>
+    {
+        public static TOut StaticDisplayAndReturn<TIn>(TIn value)
+        {
+            Console.WriteLine(value);
+            return (TOut)Convert.ChangeType(value, typeof(TOut));
         }
     }
 }
