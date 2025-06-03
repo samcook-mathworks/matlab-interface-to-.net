@@ -1,66 +1,36 @@
 # This workflow will setup .NET and MATLAB on the host machine
-name: Run MATLAB Examples
+name: Run MATLAB Interface to .NET Examples
 
 on:
-  # Run MATLAB examples if the assembly changes
-  workflow_run:
-    workflows: ["Build .NET Assembly"]
-    types:
-      - completed
-  # Otherwise, run MATLAB examples if other stuff changes
   push:
     branches: [ "main" ]
-    paths-ignore:
-      - "MyAssembly/**"
   pull_request:
     branches: [ "main" ]
-    paths-ignore:
-      - "MyAssembly/**"
 
 jobs:
-  # Setup .NET only on Unix machines. We'll use .NET Framework on Windows.
-  setup-dotnet:
+  run-examples:
     strategy:
       matrix:
-        os: [ 'ubuntu-latest', 'macos-latest' ]
+        os: [ 'windows-latest', 'ubuntu-latest', 'macos-latest' ]
         dotnet-version: [ '8.0.x' ]
-        
+
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+      
     - name: Setup .NET ${{ matrix.dotnet-version }}
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
 
-  # Setup the latest MATLAB release on all platforms
-  setup-matlab:
-    strategy:
-      matrix:
-        os: [ 'windows-latest', 'ubuntu-latest', 'macos-latest' ]
+    - name: Build .NET Code
+      run: dotnet build MyAssembly/MyAssembly.csproj
 
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v4
-    # Disabled until MathWorks is up and running
-    #- name: Setup MATLAB
-    #  uses: matlab-actions/setup-matlab@v2
-    #  with:
-    #    cache: true
+    - name: Setup Latest MATLAB
+      uses: matlab-actions/setup-matlab@v2
     
-  # Windows examples will use .NET Framework
-  test-matlab:
-    strategy:
-      matrix:
-        os: [ 'windows-latest', 'ubuntu-latest', 'macos-latest' ]
-        
-    needs: [setup-dotnet, setup-matlab]
-    runs-on: ${{ matrix.os }}
-
-    steps:
-    - uses: actions/checkout@v4
-    # Disabled until MathWorks is up and running
-    #- name: Run MATLAB Code
-    #  uses: matlab-actions/run-command@v2
-    #  with:
-    #    command: myscript
+    - name: Run MATLAB Examples
+      uses: matlab-actions/run-command@v2
+      with:
+        command: cd examples, createGenerics, delegates, invokeGenericMethods
