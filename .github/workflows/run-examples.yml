@@ -19,7 +19,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
     needs: build-dotnet
-    uses: ./.github/workflows/run-examples.yml
+    uses: ./.github/workflows/run-matlab.yml
     with:
       os: ${{ matrix.os }}
     
