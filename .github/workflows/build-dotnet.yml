@@ -1,18 +1,14 @@
 name: Build .NET Assembly
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - 'MyAssembly/**'
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - 'MyAssembly/**'
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
 
 jobs:
-  # Assembly is cross-platform, so only needs to be built on Linux.
   build-dotnet:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.os }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
