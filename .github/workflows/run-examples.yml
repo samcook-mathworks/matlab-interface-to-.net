@@ -1,0 +1,25 @@
+name: Run MATLAB Interface to .NET Examples
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-dotnet:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    uses: ./.github/workflows/build-dotnet.yml
+    with:
+      os: ${{ matrix.os }}
+  run-matlab:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    needs: build-dotnet
+    uses: ./.github/workflows/run-examples.yml
+    with:
+      os: ${{ matrix.os }}
+    
