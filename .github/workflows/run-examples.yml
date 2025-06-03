@@ -33,4 +33,4 @@ jobs:
     - name: Run MATLAB Examples
       uses: matlab-actions/run-command@v2
       with:
-        command: cd examples, createGenerics, delegates, invokeGenericMethods
+        command: cd examples, configureDotnet, createDelegates, createGenerics, invokeGenericMethods
