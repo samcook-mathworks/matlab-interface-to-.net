@@ -10,18 +10,18 @@ jobs:
   build-dotnet:
     runs-on: ${{ inputs.os }}
     steps:
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        
     - name: Checkout .NET Code
       uses: actions/checkout@v4
       with:
         sparse-checkout: |
           .github
           MyAssembly
-      
-    - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
         
-    - name: Build .NET Standard 2.0 Assembly
+    - name: Build .NET Code
       run: dotnet build MyAssembly/MyAssembly.csproj
     
