@@ -4,21 +4,21 @@
 %[text] ## Default .NET Configuration
 %[text] On Microsoft® Windows®, MATLAB defaults to loading .NET Framework 4.8.1. Otherwise, MATLAB will use the latest version of .NET installed on your machine.
 % Display the current platform
-if ispc %[output:group:2eaa73d3]
-    disp("Running on Windows"); %[output:0daf905f]
+if ispc
+    disp("Running on Windows");
 elseif ismac
     disp("Running on macOS");
 elseif isunix
     disp("Running on Linux");
-end %[output:group:2eaa73d3]
+end
 
 % Display the default runtime configuration
-switch dotnetenv().Runtime %[output:group:17eea6a9]
+switch dotnetenv().Runtime
     case "core"
         disp("MATLAB configured to use the latest version of .NET");
     case "framework"
-        disp("MATLAB configured to use .NET Framwork 4.8.1"); %[output:4ea8951a]
-end %[output:group:17eea6a9]
+        disp("MATLAB configured to use .NET Framwork 4.8.1");
+end
 %[text] ## Select .NET Framework or .NET
 %[text] If .NET is already loaded, the runtime environment cannot be changed.
 if dotnetenv().Status=="loaded"
@@ -35,6 +35,7 @@ if ispc
 end
 %[text] MATLAB will search the default install location for .NET. This can be overridden with the `DOTNET_ROOT` environment variable. `DOTNET_ROOT` is ignored for the `framework` configuration.
 if dotnetenv().Runtime == "core"
+    !dotnet --info
     setenv DOTNET_ROOT ~/tmp/dotnet
 end
 %[text] ## Select a Specific Version of .NET
@@ -48,44 +49,32 @@ dotnetenv("core", Version="8.0");
 % ..or the exact version of .NET 8.0.3
 dotnetenv("core", Version="8.0.3");
 
-% Select the latest version of .NET installed
+% Use the latest .NET version installed in the default location
 dotnetenv core;
 unsetenv DOTNET_ROOT;
 %[text] You can also specify which base-class-libraries to load using the `Frameworks` name-value pair.
 % Make .NET Core and ASP.NET Core libraries accessible from MATLAB
 dotnetenv("core", Frameworks=["Microsoft.NETCore.App", "Microsoft.AspNetCore.App"]);
 %[text] To verify the configuration, call `NET.isNETSupported.`
-if NET.isNETSupported %[output:group:73675ce3]
-    disp("ASP.NET successfully loaded"); %[output:56a64c3a]
+if NET.isNETSupported
+    disp("ASP.NET successfully loaded");
 else
     disp("Could not load ASP.NET");
 
     % Revert to default config if .NET couldn't be loaded
     if ispc
-        dotnetnev framework;
+        dotnetenv framework;
     else
         dotnetenv core;
     end
     assert(NET.isNETSupported);
-end %[output:group:73675ce3]
+end
 
 % Display the current configuration
-dotnetenv() %[output:29ca44d9]
+dotnetenv()
 
 %[appendix]{"version":"1.0"}
 %---
 %[metadata:view]
 %   data: {"layout":"onright","rightPanelPercent":31.8}
-%---
-%[output:0daf905f]
-%   data: {"dataType":"text","outputData":{"text":"Running on Windows\n","truncated":false}}
-%---
-%[output:4ea8951a]
-%   data: {"dataType":"text","outputData":{"text":"MATLAB configured to use .NET Framwork 4.8.1\n","truncated":false}}
-%---
-%[output:56a64c3a]
-%   data: {"dataType":"text","outputData":{"text":"ASP.NET successfully loaded\n","truncated":false}}
-%---
-%[output:29ca44d9]
-%   data: {"dataType":"textualVariable","outputData":{"name":"ans","value":"  <a href=\"matlab:helpPopup('matlab.netclient.NETEnvironment')\" style=\"font-weight:bold\">NETEnvironment<\/a> with properties:\n\n            Runtime: core\n             Status: loaded\n            Version: \".NET 9.0.5\"\n    RuntimeLocation: \"C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App\\9.0.5\\\"\n"}}
 %---
