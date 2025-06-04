@@ -34,9 +34,12 @@ if ispc
     dotnetenv framework;
 end
 %[text] MATLAB will search the default install location for .NET. This can be overridden with the `DOTNET_ROOT` environment variable. `DOTNET_ROOT` is ignored for the `framework` configuration.
-if dotnetenv().Runtime == "core"
+if isunix
     !dotnet --info
-    setenv DOTNET_ROOT ~/tmp/dotnet
+    if isfolder("/users/runner/.dotnet")
+        % GitHub hosted runners install .NET in this location
+        setenv DOTNET_ROOT /Users/runner/.dotnet
+    end
 end
 %[text] ## Select a Specific Version of .NET
 %[text] `dotnetenv` supports configuring the roll-forward behavior using the `Version` name-value pair.
@@ -48,12 +51,9 @@ dotnetenv("core", Version="8.0");
 
 % ..or the exact version of .NET 8.0.3
 dotnetenv("core", Version="8.0.3");
-
-% Use the latest .NET version installed in the default location
-dotnetenv core;
-unsetenv DOTNET_ROOT;
 %[text] You can also specify which base-class-libraries to load using the `Frameworks` name-value pair.
 % Make .NET Core and ASP.NET Core libraries accessible from MATLAB
+% "Version" was excluded, so this selects the latest version of .NET
 dotnetenv("core", Frameworks=["Microsoft.NETCore.App", "Microsoft.AspNetCore.App"]);
 %[text] To verify the configuration, call `NET.isNETSupported.`
 if NET.isNETSupported
